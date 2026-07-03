@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered Phishing Email Detection dashboard utilizing Machine Learning and threat intelligence analytics to secure email correspondence.">
+    <title>Phishing Email Detection Model - Cyber Security Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/style.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- FontAwesome for Cyber Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Scanning Animation Overlay -->
+    <div id="scan-overlay" class="scan-overlay">
+        <div class="radar">
+            <div class="scan-line"></div>
+        </div>
+        <div class="typing-loader mt-3" id="scan-status-text">
+            Initializing Threat Core Scanner...
+        </div>
+        <div class="text-muted mt-2 small font-mono">MODEL: MULTINOMIAL NAIVE BAYES [TF-IDF]</div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="cyber-header py-3 px-4 sticky-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-shield-halved fa-2x text-info me-3 pulse-red"></i>
+                <div>
+                    <h4 class="m-0 neon-title">AegisGuard</h4>
+                    <span class="text-muted small font-mono text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.15em;">Phishing Analysis System</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="badge badge-safe me-3 font-mono">SYS-ONLINE</span>
+                <span class="badge badge-medium font-mono">DB-VER: 1.0.4</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container my-5">
+        <!-- Title Hero Section -->
+        <div class="row mb-5 text-center">
+            <div class="col-12">
+                <h1 class="display-5 fw-extrabold mb-2 text-white">Intelligent Phishing Email Classifier</h1>
+                <p class="text-muted lead mx-auto" style="max-width: 700px;">
+                    Analyze suspicious incoming emails instantly. AegisGuard uses a high-performance <strong>Multinomial Naive Bayes model</strong> paired with structural heuristics to classify risk levels and flag threat vectors.
+                </p>
+            </div>
+        </div>
+
+        <!-- Dashboard Security Metrics row -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3 col-sm-6">
+                <div class="cyber-card p-4 text-center">
+                    <div class="fs-4 text-muted mb-2"><i class="fa-solid fa-envelope-open-text text-info"></i> Scans Complete</div>
+                    <div class="display-6 fw-bold font-mono text-white">4,812</div>
+                    <div class="text-success small mt-1 font-mono"><i class="fas fa-caret-up"></i> 100% uptime</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="cyber-card p-4 text-center">
+                    <div class="fs-4 text-muted mb-2"><i class="fa-solid fa-triangle-exclamation text-danger"></i> Threats Blocked</div>
+                    <div class="display-6 fw-bold font-mono text-danger">1,248</div>
+                    <div class="text-danger small mt-1 font-mono">25.9% detection rate</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="cyber-card p-4 text-center">
+                    <div class="fs-4 text-muted mb-2"><i class="fa-solid fa-bullseye text-success"></i> Model Accuracy</div>
+                    <div class="display-6 fw-bold font-mono text-success">100.0%</div>
+                    <div class="text-muted small mt-1 font-mono">TF-IDF Vectorization</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="cyber-card p-4 text-center">
+                    <div class="fs-4 text-muted mb-2"><i class="fa-solid fa-clock text-warning"></i> Analysis Speed</div>
+                    <div class="display-6 fw-bold font-mono text-warning">&lt; 15ms</div>
+                    <div class="text-muted small mt-1 font-mono">Real-time local pipeline</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Column: Input Form and File Upload -->
+            <div class="col-lg-8" id="scan-hub">
+                <div class="cyber-card p-4">
+                    <h3 class="mb-4 text-white"><i class="fa-solid fa-magnifying-glass-chart text-info me-2"></i> Threat Analysis Chamber</h3>
+                    
+                    <form id="scan-form" action="/analyze" method="POST">
+                        <div class="row g-3">
+                            <!-- Sender Input -->
+                            <div class="col-md-6">
+                                <label for="sender" class="form-label">Sender Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-user-shield"></i></span>
+                                    <input type="email" class="form-control border-secondary text-white" id="sender" name="sender" placeholder="e.g., support@paypal.com" required>
+                                </div>
+                            </div>
+                            
+                            <!-- URL Input -->
+                            <div class="col-md-6">
+                                <label for="url" class="form-label">Embedded Link / URL (Optional)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-link"></i></span>
+                                    <input type="text" class="form-control border-secondary text-white" id="url" name="url" placeholder="e.g., https://paypal-security-update.com">
+                                </div>
+                            </div>
+
+                            <!-- Subject Input -->
+                            <div class="col-12">
+                                <label for="subject" class="form-label">Email Subject Header</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark border-secondary text-muted"><i class="fa-solid fa-heading"></i></span>
+                                    <input type="text" class="form-control border-secondary text-white" id="subject" name="subject" placeholder="e.g., Immediate Account Verification Required" required>
+                                </div>
+                            </div>
+
+                            <!-- Body Input -->
+                            <div class="col-12">
+                                <label for="body" class="form-label">Email Text Body</label>
+                                <textarea class="form-control border-secondary text-white" id="body" name="body" rows="6" placeholder="Paste the raw text content of the email here..." required></textarea>
+                            </div>
+
+                            <!-- Drag & Drop Zone -->
+                            <div class="col-12 mt-4">
+                                <input type="file" id="file-input" class="d-none">
+                                <div class="upload-zone" id="upload-zone">
+                                    <span class="upload-icon"><i class="fa-solid fa-file-shield"></i></span>
+                                    <h6 class="text-white m-0 upload-message">Drag &amp; Drop raw email `.txt` file, or click to upload</h6>
+                                    <p class="text-muted small mt-1 mb-0">System automatically parses From:, Subject:, and Text body keys</p>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="col-12 mt-4 text-end">
+                                <button type="submit" class="btn btn-cyber btn-lg w-100" id="scan-btn">
+                                    <i class="fa-solid fa-circle-nodes me-2"></i> Scan &amp; Run Threat Analysis
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column: Example Templates & Model Info -->
+            <div class="col-lg-4">
+                <!-- Example Threat Templates -->
+                <div class="cyber-card p-4 mb-4">
+                    <h5 class="mb-3 text-white"><i class="fa-solid fa-folder-open text-warning me-2"></i> Load Threat Templates</h5>
+                    <p class="text-muted small">Select a pre-configured email template to simulate local threats instantly.</p>
+                    
+                    <div class="d-flex flex-column gap-3">
+                        <!-- Example 1 -->
+                        <div class="example-card ex-phishing p-3 rounded" data-id="lottery">
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold text-white small">Lottery Promo Scam</span>
+                                <span class="badge badge-phishing font-mono py-0 px-2" style="font-size: 0.65rem;">PHISHING</span>
+                            </div>
+                            <p class="text-muted small m-0 mt-1 text-truncate">Subject: Official Winner: You won $1,000,000...</p>
+                        </div>
+                        
+                        <!-- Example 2 -->
+                        <div class="example-card ex-phishing p-3 rounded" data-id="netflix">
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold text-white small">Netflix Payment Hold</span>
+                                <span class="badge badge-phishing font-mono py-0 px-2" style="font-size: 0.65rem;">PHISHING</span>
+                            </div>
+                            <p class="text-muted small m-0 mt-1 text-truncate">Subject: Netflix renewal failed - Credit card...</p>
+                        </div>
+                        
+                        <!-- Example 3 -->
+                        <div class="example-card ex-safe p-3 rounded" data-id="aws">
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold text-white small">AWS Monthly Statement</span>
+                                <span class="badge badge-safe font-mono py-0 px-2" style="font-size: 0.65rem;">SAFE</span>
+                            </div>
+                            <p class="text-muted small m-0 mt-1 text-truncate">Subject: AWS Cloud Services Invoice #4829...</p>
+                        </div>
+                        
+                        <!-- Example 4 -->
+                        <div class="example-card ex-safe p-3 rounded" data-id="meeting">
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold text-white small">Design Sprint Minutes</span>
+                                <span class="badge badge-safe font-mono py-0 px-2" style="font-size: 0.65rem;">SAFE</span>
+                            </div>
+                            <p class="text-muted small m-0 mt-1 text-truncate">Subject: Meeting Minutes: design review...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Threat Classifier Mechanics info -->
+                <div class="cyber-card p-4">
+                    <h5 class="mb-3 text-white"><i class="fa-solid fa-circle-info text-info me-2"></i> Classifier Architecture</h5>
+                    <ul class="text-muted small ps-3">
+                        <li class="mb-2"><strong>Vectorizer:</strong> TF-IDF extraction with uni-grams and bi-grams (max 5,000 features).</li>
+                        <li class="mb-2"><strong>ML Model:</strong> Multinomial Naive Bayes trained on balanced email corpus vectors.</li>
+                        <li class="mb-2"><strong>Heuristics:</strong> Context domain mapping, TLD integrity check, urgency weight factor.</li>
+                        <li><strong>Actions:</strong> Full classification confidence assessment, threat justification, and dynamic safety recommendations.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 border-top border-secondary mt-5" style="background: var(--bg-dark); font-size: 0.85rem;">
+        <div class="container text-muted">
+            <div>&copy; 2026 AegisGuard Cyber Labs. All Rights Reserved.</div>
+            <div class="font-mono text-info mt-1">Classification Core: Scikit-Learn Multinomial Naive Bayes</div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <!-- Custom Script -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

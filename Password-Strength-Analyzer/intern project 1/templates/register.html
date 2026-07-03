@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Initialize Agent - Secure Gateway{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-75">
+    <div class="col-md-6">
+        <!-- Secure Cyber-styled Registration Card -->
+        <div class="card card-cyber">
+            <div class="card-header-cyber text-center">
+                <h3 class="font-orbitron text-glow-cyan my-2">&lt;INITIALIZE_NEW_AGENT&gt;</h3>
+                <p class="text-muted-cyan font-mono small">GENERATE SECURE PROFILE CREDENTIALS</p>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('auth.register') }}" method="POST" autocomplete="off" class="needs-validation" id="registerForm">
+                    <!-- Manual CSRF Token Protection -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                    <!-- Username Input -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label font-mono text-neon-cyan">AGENT_NAME (Username)</label>
+                        <div class="input-group-cyber">
+                            <span class="input-icon font-mono">[UN]</span>
+                            <input type="text" 
+                                   id="username" 
+                                   name="username" 
+                                   class="form-control cyber-input" 
+                                   placeholder="4-20 chars (alphanumeric)" 
+                                   value="{{ username or '' }}"
+                                   required>
+                        </div>
+                        <div class="form-text font-mono text-muted-cyan text-xs">Alphanumeric characters and underscores only.</div>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label font-mono text-neon-cyan">COMMS_ADDR (Email)</label>
+                        <div class="input-group-cyber">
+                            <span class="input-icon font-mono">[EM]</span>
+                            <input type="email" 
+                                   id="email" 
+                                   name="email" 
+                                   class="form-control cyber-input" 
+                                   placeholder="e.g. agent@agency.com" 
+                                   value="{{ email or '' }}"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Password Input -->
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label font-mono text-neon-cyan">ENCRYPT_KEY (Password)</label>
+                            <div class="input-group-cyber">
+                                <span class="input-icon font-mono">[PW]</span>
+                                <input type="password" 
+                                       id="password" 
+                                       name="password" 
+                                       class="form-control cyber-input" 
+                                       placeholder="Strong key" 
+                                       required>
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password Input -->
+                        <div class="col-md-6 mb-3">
+                            <label for="confirm_password" class="form-label font-mono text-neon-cyan">CONFIRM_KEY</label>
+                            <div class="input-group-cyber">
+                                <span class="input-icon font-mono">[OK]</span>
+                                <input type="password" 
+                                       id="confirm_password" 
+                                       name="confirm_password" 
+                                       class="form-control cyber-input" 
+                                       placeholder="Repeat key" 
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Client-Side Password Strength & Confirmation Indicators -->
+                    <div class="password-complexity-card p-3 my-3 font-mono text-xs">
+                        <div class="complexity-title mb-2 text-neon-cyan border-bottom border-cyber pb-1">PASSWORD_COMPLEXITY_POLICIES:</div>
+                        <ul class="list-unstyled mb-0">
+                            <li id="rule-length" class="text-danger"><span class="rule-status">[ ]</span> Minimum 8 characters</li>
+                            <li id="rule-upper" class="text-danger"><span class="rule-status">[ ]</span> At least 1 uppercase letter</li>
+                            <li id="rule-lower" class="text-danger"><span class="rule-status">[ ]</span> At least 1 lowercase letter</li>
+                            <li id="rule-number" class="text-danger"><span class="rule-status">[ ]</span> At least 1 digit</li>
+                            <li id="rule-special" class="text-danger"><span class="rule-status">[ ]</span> At least 1 special character</li>
+                            <li id="rule-match" class="text-danger"><span class="rule-status">[ ]</span> Confirmation matching confirm key</li>
+                        </ul>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid mb-2">
+                        <button type="submit" class="btn btn-cyber-primary font-orbitron py-2" id="submitBtn" disabled>
+                            GENERATE_AGENT_PROFILE
+                        </button>
+                    </div>
+
+                    <div class="text-center font-mono mt-3">
+                        <span class="text-muted-cyan small">Already initialized?</span>
+                        <a href="{{ url_for('auth.login') }}" class="text-link-pink small ms-1">Access Gateway &gt;&gt;</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

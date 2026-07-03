@@ -1,0 +1,17 @@
+{
+    "accuracy": 0.9666666666666667,
+    "confusion_matrix": {
+        "tn": 14,
+        "fp": 1,
+        "fn": 0,
+        "tp": 15
+    },
+    "classification_report": {
+        "precision": 0.9375,
+        "recall": 1.0,
+        "f1_score": 0.967741935483871
+    },
+    "total_samples": 150,
+    "train_samples": 120,
+    "test_samples": 30
+}

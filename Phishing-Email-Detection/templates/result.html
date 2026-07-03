@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Detailed email threat classification analysis. Reviews model weights, confidence ratings, heuristics, and recommendations.">
+    <title>Threat Report - AegisGuard Email Scanner</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/style.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="cyber-header py-3 px-4 sticky-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <a href="/" class="text-decoration-none d-flex align-items-center">
+                    <i class="fa-solid fa-shield-halved fa-2x text-info me-3 pulse-red"></i>
+                    <div>
+                        <h4 class="m-0 neon-title">AegisGuard</h4>
+                        <span class="text-muted small font-mono text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.15em;">Phishing Analysis System</span>
+                    </div>
+                </a>
+            </div>
+            <div>
+                <a href="/" class="btn btn-cyber-outline btn-sm font-mono"><i class="fas fa-chevron-left me-2"></i>New Scan</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container my-5">
+        <!-- Report Header Section -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <span class="text-muted font-mono small text-uppercase tracking-wider">Audit Security Log</span>
+                <h1 class="display-6 fw-bold mt-1 text-white">Email Threat Verdict Report</h1>
+                <p class="text-muted font-mono small mt-2">TRANS-ID: {{ tx_id }} | DATE: {{ scan_date }}</p>
+            </div>
+        </div>
+
+        <!-- Dashboard Cards Grid -->
+        <div class="row g-4 mb-5">
+            <!-- 1. Prediction Result Card -->
+            <div class="col-md-3">
+                <div class="cyber-card p-4 text-center h-100 {% if result.prediction == 'Phishing' %}card-phishing{% else %}card-safe{% endif %}">
+                    <div class="text-muted small text-uppercase font-mono mb-2">Verdict</div>
+                    
+                    {% if result.prediction == "Phishing" %}
+                        <div class="display-6 text-danger fw-bold"><i class="fa-solid fa-triangle-exclamation mb-2"></i></div>
+                        <span class="badge badge-phishing fs-6 py-2 px-3 text-uppercase font-mono">PHISHING ALERT</span>
+                    {% else %}
+                        <div class="display-6 text-success fw-bold"><i class="fa-solid fa-square-check mb-2"></i></div>
+                        <span class="badge badge-safe fs-6 py-2 px-3 text-uppercase font-mono">SAFE VERDICT</span>
+                    {% endif %}
+                    
+                    <p class="text-muted small mt-3 mb-0">Email is categorized as {{ result.prediction }} based on text features.</p>
+                </div>
+            </div>
+
+            <!-- 2. Confidence Score Card -->
+            <div class="col-md-3">
+                <div class="cyber-card p-4 text-center h-100 {% if result.prediction == 'Phishing' %}card-phishing{% elif result.risk_level == 'Medium' %}card-medium{% else %}card-safe{% endif %}">
+                    <div class="text-muted small text-uppercase font-mono mb-3">Model Confidence</div>
+                    
+                    <!-- Circular SVG Gauge -->
+                    <div class="gauge-container">
+                        <svg width="100%" height="100%" viewBox="0 0 120 120" class="gauge-svg">
+                            <circle class="gauge-bg" cx="60" cy="60" r="50"></circle>
+                            <circle class="gauge-fill" cx="60" cy="60" r="50"
+                                    style="stroke-dasharray: 314.159; 
+                                           stroke-dashoffset: {{ 314.159 - (result.confidence / 100 * 314.159) }};
+                                           stroke: {% if result.prediction == 'Phishing' %}var(--phishing){% elif result.risk_level == 'Medium' %}var(--warning){% else %}var(--safe){% endif %};">
+                            </circle>
+                        </svg>
+                        <div class="gauge-label">
+                            <div class="gauge-value">{{ result.confidence }}%</div>
+                            <div class="gauge-title">MATCH</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Risk Meter Card -->
+            <div class="col-md-3">
+                <div class="cyber-card p-4 text-center h-100 {% if result.risk_level == 'High' %}card-phishing{% elif result.risk_level == 'Medium' %}card-medium{% else %}card-safe{% endif %}">
+                    <div class="text-muted small text-uppercase font-mono mb-2">Threat Risk Level</div>
+                    
+                    <div class="display-6 fw-bold my-2 font-mono 
+                         {% if result.risk_level == 'High' %}text-danger
+                         {% elif result.risk_level == 'Medium' %}text-warning
+                         {% else %}text-success{% endif %}">
+                        {{ result.risk_level | upper }}
+                    </div>
+                    
+                    <!-- Risk Progress Indicator -->
+                    <div class="px-2 mt-4">
+                        <div class="d-flex justify-content-between text-muted font-mono" style="font-size: 0.65rem;">
+                            <span>LOW</span>
+                            <span>MED</span>
+                            <span>HIGH</span>
+                        </div>
+                        <div class="progress bg-dark mt-1" style="height: 10px; border-radius: 5px;">
+                            <div class="progress-bar {% if result.risk_level == 'High' %}bg-danger{% elif result.risk_level == 'Medium' %}bg-warning{% else %}bg-success{% endif %}"
+                                 role="progressbar" 
+                                 style="width: {% if result.risk_level == 'High' %}100%{% elif result.risk_level == 'Medium' %}50%{% else %}15%{% endif %};">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Email Status Card -->
+            <div class="col-md-3">
+                <div class="cyber-card p-4 text-center h-100">
+                    <div class="text-muted small text-uppercase font-mono mb-2">Threat Vector Audit</div>
+                    
+                    <div class="display-6 text-info fw-bold"><i class="fa-solid fa-network-wired mb-2"></i></div>
+                    <div class="font-mono text-white fs-5 mt-2">{{ result.heuristic_count }} Trigger Flags</div>
+                    
+                    <p class="text-muted small mt-2 mb-0">Structural filters identified {{ result.heuristic_count }} warning markers.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Breakdown -->
+        <div class="row g-4">
+            <!-- Left: Scanned Metadata & Text Content -->
+            <div class="col-lg-7">
+                <div class="cyber-card p-4 h-100">
+                    <h4 class="mb-4 text-white"><i class="fa-solid fa-file-invoice text-info me-2"></i> Scan Target Details</h4>
+                    
+                    <div class="row mb-3 pb-3 border-bottom border-secondary">
+                        <div class="col-sm-3 text-muted font-mono small text-uppercase">Sender</div>
+                        <div class="col-sm-9 text-white font-mono word-break-all">{{ input_data.sender }}</div>
+                    </div>
+                    <div class="row mb-3 pb-3 border-bottom border-secondary">
+                        <div class="col-sm-3 text-muted font-mono small text-uppercase">Subject</div>
+                        <div class="col-sm-9 text-white fw-bold">{{ input_data.subject }}</div>
+                    </div>
+                    {% if input_data.url %}
+                    <div class="row mb-3 pb-3 border-bottom border-secondary">
+                        <div class="col-sm-3 text-muted font-mono small text-uppercase">URL Link</div>
+                        <div class="col-sm-9 text-info font-mono word-break-all">{{ input_data.url }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-12 text-muted font-mono small text-uppercase mb-2">Email Text Body Snippet</div>
+                        <div class="col-12 bg-dark p-3 rounded text-white border border-secondary text-break" style="white-space: pre-wrap; font-size: 0.9rem; max-height: 250px; overflow-y: auto;">{{ input_data.body }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Detection Reasons and Security Recommendations -->
+            <div class="col-lg-5">
+                <div class="d-flex flex-column gap-4">
+                    <!-- Reasons Card -->
+                    <div class="cyber-card p-4">
+                        <h5 class="mb-3 text-white"><i class="fa-solid fa-brain text-secondary me-2"></i> Detection Breakdown</h5>
+                        
+                        <div class="d-flex flex-column gap-2">
+                            {% for reason in result.reasons %}
+                                <div class="small p-2 bg-dark rounded border border-secondary text-muted">
+                                    <i class="fa-solid fa-circle-chevron-right text-info me-2"></i>{{ reason }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Recommendations Card -->
+                    <div class="cyber-card p-4">
+                        <h5 class="mb-3 text-white"><i class="fa-solid fa-shield-halved text-success me-2"></i> Aegis Shield Protocols</h5>
+                        
+                        <div class="recommendations">
+                            {% for recommendation in result.recommendations %}
+                                <div class="rec-item">
+                                    {% if result.prediction == "Phishing" %}
+                                        <i class="fa-solid fa-triangle-exclamation text-danger fs-5"></i>
+                                    {% else %}
+                                        <i class="fa-solid fa-shield-heart text-success fs-5"></i>
+                                    {% endif %}
+                                    <span class="text-white-50 small">{{ recommendation }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Panel -->
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <a href="/" class="btn btn-cyber-outline me-3 btn-lg font-mono">
+                    <i class="fa-solid fa-magnifying-glass me-2"></i> Scan Another Email
+                </a>
+                <button class="btn btn-cyber btn-lg font-mono" onclick="window.print()">
+                    <i class="fa-solid fa-print me-2"></i> Print Security Report
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 border-top border-secondary mt-5 d-print-none" style="background: var(--bg-dark); font-size: 0.85rem;">
+        <div class="container text-muted">
+            <div>&copy; 2026 AegisGuard Cyber Labs. All Rights Reserved.</div>
+            <div class="font-mono text-info mt-1">Classification Core: Scikit-Learn Multinomial Naive Bayes</div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

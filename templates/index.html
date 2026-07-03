@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}SECURE_AUTH // Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center flex-grow-1">
+    <div class="col-lg-8 text-center">
+        <!-- Visual Shield/Lock Icon with Pulse Glow -->
+        <div class="d-inline-flex justify-content-center align-items-center mb-4 pulse-glow" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--primary-cyan); background: rgba(0, 242, 254, 0.05);">
+            <i class="bi bi-shield-lock text-info" style="font-size: 3.5rem;"></i>
+        </div>
+        
+        <h1 class="display-4 fw-bold mb-3 glow-text text-white">SECURE LOGIN SYSTEM</h1>
+        <p class="lead text-muted mb-5 mx-auto" style="max-width: 600px;">
+            A state-of-the-art authentication portal showcasing modern cyber security protocols. Engineered with advanced cryptography, parameterized database security, and modular architecture.
+        </p>
+
+        <!-- Feature Grid inside Glass Cards -->
+        <div class="row g-4 text-start mb-5 justify-content-center">
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100">
+                    <div class="mb-3 text-info">
+                        <i class="bi bi-key-fill fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 cyber-font text-white">Bcrypt Hashing</h5>
+                    <p class="small text-muted mb-0">Secure, salted password storage using standard Bcrypt stretching algorithms to protect against rainbow table attacks.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100">
+                    <div class="mb-3 text-info">
+                        <i class="bi bi-shield-check fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 cyber-font text-white">SQL Injection Proof</h5>
+                    <p class="small text-muted mb-0">Robust SQLite integration backed by SQLAlchemy ORM to completely eliminate vulnerability to arbitrary SQL queries.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100">
+                    <div class="mb-3 text-info">
+                        <i class="bi bi-fingerprint fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 cyber-font text-white">CSRF & Session Fix</h5>
+                    <p class="small text-muted mb-0">Advanced custom cross-site request forgery checks, HTTPOnly cookies, and strict session invalidation upon login.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="{{ url_for('login') }}" class="btn btn-cyber-primary px-4 py-2">
+                <i class="bi bi-box-arrow-in-right me-2"></i>ACCESS PORTAL
+            </a>
+            <a href="{{ url_for('register') }}" class="btn btn-cyber-secondary px-4 py-2">
+                <i class="bi bi-person-plus me-2"></i>CREATE CREDENTIALS
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

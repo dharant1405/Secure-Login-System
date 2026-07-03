@@ -1,0 +1,441 @@
+/* ==========================================================================
+   Cyber Security Theme Stylesheet - Phishing Email Detector
+   ========================================================================== */
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap');
+
+:root {
+    --bg-darker: #080b10;
+    --bg-dark: #0f131a;
+    --bg-card: rgba(22, 28, 38, 0.7);
+    --border-color: rgba(0, 242, 254, 0.15);
+    --border-glow: rgba(0, 242, 254, 0.4);
+    
+    --primary: #00f2fe;
+    --primary-glow: rgba(0, 242, 254, 0.3);
+    --secondary: #9b51e0;
+    
+    --safe: #00ff88;
+    --safe-glow: rgba(0, 255, 136, 0.2);
+    --phishing: #ff0055;
+    --phishing-glow: rgba(255, 0, 85, 0.2);
+    
+    --warning: #ffb703;
+    --warning-glow: rgba(255, 183, 3, 0.2);
+    
+    --text-main: #e2e8f0;
+    --text-muted: #8a99ad;
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+}
+
+/* Global Reset & Base Styling */
+body {
+    background-color: var(--bg-darker);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(155, 81, 224, 0.05) 0%, transparent 40%),
+        linear-gradient(rgba(15, 19, 26, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 19, 26, 0.4) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Scanline Effect overlay */
+body::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 99999;
+    background-size: 100% 4px, 6px 100%;
+    pointer-events: none;
+    opacity: 0.15;
+}
+
+/* Typography Customizations */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+/* Glassmorphism Cards */
+.cyber-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.cyber-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    opacity: 0.8;
+}
+
+.cyber-card:hover {
+    border-color: var(--border-glow);
+    box-shadow: 0 12px 40px 0 rgba(0, 242, 254, 0.15);
+    transform: translateY(-2px);
+}
+
+.cyber-card.card-safe::before {
+    background: var(--safe);
+}
+.cyber-card.card-safe:hover {
+    box-shadow: 0 12px 40px 0 rgba(0, 255, 136, 0.15);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.cyber-card.card-phishing::before {
+    background: var(--phishing);
+}
+.cyber-card.card-phishing:hover {
+    box-shadow: 0 12px 40px 0 rgba(255, 0, 85, 0.15);
+    border-color: rgba(255, 0, 85, 0.3);
+}
+
+.cyber-card.card-medium::before {
+    background: var(--warning);
+}
+.cyber-card.card-medium:hover {
+    box-shadow: 0 12px 40px 0 rgba(255, 183, 3, 0.15);
+    border-color: rgba(255, 183, 3, 0.3);
+}
+
+/* Cyber Dashboard Elements */
+.cyber-header {
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(15, 19, 26, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.neon-title {
+    text-transform: uppercase;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    background: linear-gradient(45deg, #ffffff 30%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+}
+
+.pulse-red {
+    box-shadow: 0 0 0 0 rgba(255, 0, 85, 0.7);
+    animation: pulseRed 2s infinite;
+}
+
+@keyframes pulseRed {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 85, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 0, 85, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 85, 0);
+    }
+}
+
+/* Custom Input Styling */
+.form-control, .form-select {
+    background-color: rgba(8, 11, 16, 0.6);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 8px;
+    padding: 12px 16px;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(8, 11, 16, 0.8);
+    border-color: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Buttons */
+.btn-cyber {
+    background: linear-gradient(135deg, var(--primary) 0%, #00b8ff 100%);
+    border: none;
+    color: #000000;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-cyber:hover {
+    box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
+    transform: translateY(-1px);
+    color: #000000;
+}
+
+.btn-cyber-outline {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-cyber-outline:hover {
+    background: var(--primary-glow);
+    color: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+/* Drag & Drop File Upload */
+.upload-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    background: rgba(8, 11, 16, 0.4);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--primary);
+    background: rgba(0, 242, 254, 0.05);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.1) inset;
+}
+
+.upload-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.upload-zone:hover .upload-icon {
+    transform: translateY(-5px);
+}
+
+/* Examples Card Templates */
+.example-card {
+    background: rgba(15, 19, 26, 0.5);
+    border-left: 3px solid var(--primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.example-card:hover {
+    background: rgba(15, 19, 26, 0.8);
+    transform: translateX(3px);
+}
+
+.example-card.ex-phishing {
+    border-left-color: var(--phishing);
+}
+.example-card.ex-safe {
+    border-left-color: var(--safe);
+}
+
+/* Loader Screen Grid Overlay */
+.scan-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(8, 11, 16, 0.95);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.scan-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.radar {
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 20px var(--primary-glow);
+    margin-bottom: 30px;
+}
+
+.radar::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--primary-glow) 0deg, transparent 180deg);
+    animation: rotate 2s linear infinite;
+    top: -2px;
+    left: -2px;
+    border: 2px solid transparent;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.scan-line {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: var(--primary);
+    box-shadow: 0 0 15px var(--primary);
+    animation: scanVertical 2.5s ease-in-out infinite;
+    opacity: 0.7;
+}
+
+@keyframes scanVertical {
+    0% { top: 0%; }
+    50% { top: 100%; }
+    100% { top: 0%; }
+}
+
+.typing-loader {
+    font-family: var(--font-mono);
+    color: var(--primary);
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+}
+
+/* Risk Meter Gauges */
+.gauge-container {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+}
+
+.gauge-svg {
+    transform: rotate(-90deg);
+}
+
+.gauge-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 12;
+}
+
+.gauge-fill {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease-out;
+}
+
+.gauge-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.gauge-value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #ffffff;
+}
+
+.gauge-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Dashboard Badges */
+.badge-phishing {
+    background: rgba(255, 0, 85, 0.15);
+    border: 1px solid var(--phishing);
+    color: var(--phishing);
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+}
+
+.badge-safe {
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid var(--safe);
+    color: var(--safe);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.badge-medium {
+    background: rgba(255, 183, 3, 0.15);
+    border: 1px solid var(--warning);
+    color: var(--warning);
+    text-shadow: 0 0 10px rgba(255, 183, 3, 0.3);
+}
+
+/* Recommendation Checklist styling */
+.rec-item {
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.rec-item i {
+    margin-top: 3px;
+    margin-right: 12px;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+    .gauge-container {
+        width: 130px;
+        height: 130px;
+    }
+    .gauge-value {
+        font-size: 1.6rem;
+    }
+}

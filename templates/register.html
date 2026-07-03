@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}SECURE_AUTH // Register{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center flex-grow-1">
+    <div class="col-md-8 col-lg-6">
+        <!-- Glassmorphism Card -->
+        <div class="glass-card p-4 p-sm-5">
+            <h2 class="text-center fw-bold mb-2 glow-text text-white">INITIALIZE IDENTITY</h2>
+            <p class="text-center text-muted small mb-4">Establish secure credentials on the local directory.</p>
+            
+            <!-- Registration Form -->
+            <form action="{{ url_for('register') }}" method="POST" autocomplete="off">
+                <!-- CSRF Protection -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <!-- Username -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-cyber" id="username" name="username" placeholder="Username" required minlength="4" maxlength="30" pattern="^\w+$">
+                    <label for="username"><i class="bi bi-person me-2"></i>Username</label>
+                    <div class="form-text text-muted" style="font-size: 0.75rem;">
+                        4-30 characters. Letters, numbers, and underscores only.
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control form-control-cyber" id="email" name="email" placeholder="Email Address" required>
+                    <label for="email"><i class="bi bi-envelope me-2"></i>Email Address</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-floating mb-2 password-field-wrapper">
+                    <input type="password" class="form-control form-control-cyber" id="password" name="password" placeholder="Password" required>
+                    <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
+                    <button type="button" class="password-toggle-btn" data-target="password" aria-label="Toggle Password Visibility">
+                        <i class="bi bi-eye-slash fs-5"></i>
+                    </button>
+                </div>
+
+                <!-- Real-time Password Strength Meter -->
+                <div class="mb-3 px-1">
+                    <div class="strength-meter-container">
+                        <div id="strength-bar" class="strength-meter-bar"></div>
+                    </div>
+                    <div id="strength-text" class="strength-text"></div>
+                    <div class="form-text text-muted" style="font-size: 0.75rem; line-height: 1.2; margin-top: 0.4rem;">
+                        Must contain at least 8 characters, an uppercase letter, a lowercase letter, a digit, and a special character.
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-floating mb-4 password-field-wrapper">
+                    <input type="password" class="form-control form-control-cyber" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                    <label for="confirm_password"><i class="bi bi-shield-check me-2"></i>Confirm Password</label>
+                    <button type="button" class="password-toggle-btn" data-target="confirm_password" aria-label="Toggle Password Visibility">
+                        <i class="bi bi-eye-slash fs-5"></i>
+                    </button>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-cyber-primary py-2 btn-lg">
+                        <i class="bi bi-person-check-fill me-2"></i>COMMIT CREDENTIALS
+                    </button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <p class="small text-muted mb-0">
+                        Identity already exists? 
+                        <a href="{{ url_for('login') }}" class="text-info text-decoration-none fw-bold">Access Portal</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

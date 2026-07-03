@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="System access authentication portal.">
+    <title>Secure Login System - Authenticate System</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Cyber Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="cyber-grid"></div>
+    <div class="scanlines"></div>
+
+    <!-- Page Loading Screen -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="cyber-ring"></div>
+        <div class="loading-text">DECRYPTING SECURITY CHANNELS...</div>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-cyber">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-cyber" href="{{ url_for('index') }}">
+                <i class="fa-solid fa-shield-halved text-glow-blue me-2"></i>SECURE_PORTAL
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-cyber active" href="{{ url_for('login') }}"><i class="fa-solid fa-key me-1"></i> ACCESS_UPLINK</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-cyber" href="{{ url_for('register') }}"><i class="fa-solid fa-user-plus me-1"></i> INITIALIZE_NODE</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container my-auto py-5">
+        <div class="row justify-content-center align-items-stretch g-4">
+            
+            <!-- Left Side: Login Card -->
+            <div class="col-lg-6 col-md-10 fade-in-up">
+                <div class="cyber-card h-100">
+                    <div class="card-corner-decor"></div>
+                    <div class="card-corner-decor-bl"></div>
+
+                    <h2 class="mb-2 text-glow-blue"><i class="fa-solid fa-terminal me-2"></i>ACCESS CONTROL</h2>
+                    <p class="text-secondary mb-4 small text-uppercase">Handshake protocol: ENCRYPTED_SHA256</p>
+
+                    <!-- Flash messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-cyber alert-cyber-{{ category }} alert-dismissible fade show" role="alert">
+                                    <i class="fa-solid {% if category=='danger' %}fa-triangle-exclamation{% elif category=='success' %}fa-circle-check{% else %}fa-circle-info{% endif %} me-2"></i>
+                                    {{ message }}
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- Login Form -->
+                    <form method="POST" action="{{ url_for('login') }}" autocomplete="off">
+                        {{ form.hidden_tag() }}
+
+                        <!-- Username -->
+                        <div class="mb-4">
+                            <label for="username" class="cyber-label">{{ form.username.label }}</label>
+                            <div class="input-icon-group">
+                                {{ form.username(class="form-control cyber-input", id="username", placeholder="Enter authorization handle") }}
+                                <i class="fa-solid fa-user-ninja"></i>
+                            </div>
+                            {% if form.username.errors %}
+                                {% for error in form.username.errors %}
+                                    <div class="text-glow-pink mt-1 small"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-4">
+                            <label for="password" class="cyber-label">{{ form.password.label }}</label>
+                            <div class="input-icon-group">
+                                {{ form.password(class="form-control cyber-input", id="password", placeholder="••••••••") }}
+                                <i class="fa-solid fa-key-skeleton fa-key"></i>
+                            </div>
+                            {% if form.password.errors %}
+                                {% for error in form.password.errors %}
+                                    <div class="text-glow-pink mt-1 small"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Remember Me & Forgot Password -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                {{ form.remember(class="form-check-input cyber-check", id="remember") }}
+                                <label class="form-check-label text-secondary small text-uppercase" for="remember" style="letter-spacing:1px; cursor:pointer;">
+                                    Maintain Secure Session
+                                </label>
+                            </div>
+                            <a href="{{ url_for('forgot_password') }}" class="small text-uppercase" style="font-family:'Orbitron',sans-serif; font-size:0.8rem; letter-spacing:1px;">
+                                Recover Key
+                            </a>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button type="submit" class="btn btn-cyber w-100 mb-3">
+                            <i class="fa-solid fa-network-wired me-2"></i>Authenticate Credentials
+                        </button>
+
+                        <div class="text-center mt-3">
+                            <span class="text-secondary small text-uppercase">No credentials established? </span>
+                            <a href="{{ url_for('register') }}" class="small text-uppercase" style="font-family:'Orbitron',sans-serif; font-size:0.8rem; letter-spacing:1px; font-weight: 600;">
+                                Initialize Node
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side: Anime Hacker Illustration -->
+            <div class="col-lg-6 col-md-10 d-none d-lg-block fade-in-up" style="animation-delay: 0.15s;">
+                <div class="anime-frame">
+                    <div class="hud-tag">SEC_COMMS // SYS.HACK.01</div>
+                    <img src="{{ url_for('static', filename='images/cyber_hacker.jpg') }}" alt="Anime Cyber Hacker Illustration" class="anime-img">
+                    <div class="anime-overlay-text">
+                        <span class="anime-badge">Cyber Hacker Active</span>
+                        <h4 class="text-glow-blue m-0">Uplink Terminal 0xFE</h4>
+                        <p class="text-secondary small m-0" style="font-family:'Share Tech Mono',monospace;">Protocol initialized. Secure environment active.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-cyber text-center">
+        <div class="container">
+            <p class="mb-0">
+                <i class="fa-solid fa-lock text-glow-blue me-1"></i> SECURE LOGIN SYSTEM v1.0.4 // ENCRYPTED NODE CONTEXT // 2026
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+/* ----------------------------------------------------
+   SHIELD // Password Analyzer - Custom Design System
+   Theme: Cybernetic Dark / Hacker Glow / Modern InfoSec
+---------------------------------------------------- */
+
+:root {
+    --bg-dark: #080c10;
+    --card-bg: rgba(14, 22, 33, 0.7);
+    --border-cyan: rgba(0, 255, 204, 0.2);
+    --border-cyan-active: rgba(0, 255, 204, 0.8);
+    --text-cyan: #00ffcc;
+    --text-cyan-glow: #00ffcc;
+    --text-muted-cyber: #8a9ba8;
+    --cyber-danger: #ff4a5a;
+    --cyber-warning: #ffd200;
+    --cyber-success: #00ff66;
+    
+    /* HSL dynamic colors */
+    --cyan-hsl: 168, 100%, 50%;
+    --danger-hsl: 355, 100%, 64%;
+    --warning-hsl: 50, 100%, 50%;
+    --success-hsl: 144, 100%, 50%;
+}
+
+/* Base resets & styles */
+body {
+    background-color: var(--bg-dark);
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Orbitron font applied to tech-titles */
+.cyber-title, .brand-badge, .badge, .cyber-card h2, #charCount, #entropyVal, #shannonVal, #lengthDisplay {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+}
+
+/* Background Cyberpunk Elements */
+.cyber-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 0, 127, 0.03) 0%, transparent 40%),
+        linear-gradient(rgba(18, 24, 38, 0.95), rgba(8, 12, 16, 0.98));
+}
+
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+/* Brand badge in Header */
+.brand-badge {
+    background-color: rgba(0, 255, 204, 0.1);
+    border: 1px solid var(--border-cyan);
+    color: var(--text-cyan);
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.05);
+}
+
+.text-cyan {
+    color: var(--text-cyan) !important;
+}
+
+.cyber-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffffff 40%, #00ffcc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px rgba(0, 255, 204, 0.25);
+}
+
+.cyber-subtitle {
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+}
+
+/* Cyber Glassmorphism Cards */
+.cyber-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-cyan);
+    border-radius: 8px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.cyber-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--text-cyan), transparent);
+    transform: scaleX(0);
+    transition: transform 0.5s ease;
+}
+
+.cyber-card:hover {
+    border-color: rgba(0, 255, 204, 0.4);
+    box-shadow: 0 12px 40px 0 rgba(0, 255, 204, 0.08);
+}
+
+.cyber-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* Header within Cards */
+.card-header-cyber {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 0.75rem;
+}
+
+/* Online Status Indicator */
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-indicator.online {
+    background-color: var(--cyber-success);
+    box-shadow: 0 0 8px var(--cyber-success);
+    animation: pulse-green 2s infinite;
+}
+
+/* Input Fields - Glowing custom input */
+.input-group-cyber {
+    border: 1px solid var(--border-cyan);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    transition: all 0.25s ease;
+}
+
+.input-group-cyber:focus-within {
+    border-color: var(--text-cyan);
+    box-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
+}
+
+.input-group-cyber input {
+    box-shadow: none !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.input-group-cyber input::placeholder {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.input-group-cyber .input-group-text {
+    border: none !important;
+    font-size: 1.1rem;
+}
+
+/* Hide/Show Eye Button and Copy button */
+.btn-cyber-toggle, .btn-cyber-copy {
+    background-color: transparent !important;
+    color: var(--text-muted-cyber) !important;
+    border: none !important;
+    transition: color 0.2s ease;
+}
+
+.btn-cyber-toggle:hover, .btn-cyber-copy:hover {
+    color: var(--text-cyan) !important;
+}
+
+/* Copy Button Enabled Hover effect */
+.btn-cyber-copy:not(:disabled) {
+    color: var(--text-cyan) !important;
+    text-shadow: 0 0 5px var(--text-cyan);
+}
+
+.btn-cyber-copy:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Custom Progress Bar styling */
+.progress-cyber {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-cyber .progress-bar {
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s ease;
+    box-shadow: 0 0 8px rgba(var(--cyan-hsl), 0.5);
+}
+
+/* Real-time Requirement Checklist items */
+.criteria-item {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.01);
+    transition: all 0.25s ease;
+}
+
+.criteria-item.check {
+    border-color: rgba(0, 255, 102, 0.2);
+    background-color: rgba(0, 255, 102, 0.04);
+    color: #e2e8f0;
+}
+
+.criteria-item.uncheck {
+    border-color: rgba(255, 74, 90, 0.08);
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--text-muted-cyber);
+}
+
+.criteria-item .status-icon {
+    font-size: 0.95rem;
+}
+
+/* Badges for strength levels */
+.strength-badge {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.badge-empty {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted-cyber);
+}
+
+.badge-weak {
+    background-color: rgba(255, 74, 90, 0.15) !important;
+    border: 1px solid var(--cyber-danger);
+    color: var(--cyber-danger);
+    box-shadow: 0 0 10px rgba(255, 74, 90, 0.15);
+}
+
+.badge-medium {
+    background-color: rgba(255, 210, 0, 0.15) !important;
+    border: 1px solid var(--cyber-warning);
+    color: var(--cyber-warning);
+    box-shadow: 0 0 10px rgba(255, 210, 0, 0.15);
+}
+
+.badge-strong {
+    background-color: rgba(0, 255, 102, 0.15) !important;
+    border: 1px solid var(--cyber-success);
+    color: var(--cyber-success);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.15);
+}
+
+/* Security Metrics metrics list styles */
+.metric-row {
+    font-size: 0.95rem;
+}
+
+.metric-row span:first-child {
+    font-size: 0.9rem;
+}
+
+.border-bottom {
+    border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Suggestions & terminal recommendations items */
+.suggestions-list {
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+/* Custom scrollbars for recommendations list */
+.suggestions-list::-webkit-scrollbar {
+    width: 6px;
+}
+.suggestions-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
+.suggestions-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 204, 0.2);
+    border-radius: 4px;
+}
+.suggestions-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 204, 0.4);
+}
+
+.suggestion-item {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    border-left: 2px solid var(--text-cyan);
+    background-color: rgba(0, 255, 204, 0.02);
+    margin-bottom: 8px;
+    border-radius: 0 4px 4px 0;
+    line-height: 1.4;
+}
+
+.suggestion-item.danger-suggest {
+    border-left-color: var(--cyber-danger);
+    background-color: rgba(255, 74, 90, 0.02);
+}
+
+/* Generator styling */
+.slider-cyber {
+    background: rgba(255, 255, 255, 0.1) !important;
+    height: 6px;
+    border-radius: 3px;
+}
+
+.slider-cyber::-webkit-slider-thumb {
+    background: var(--text-cyan) !important;
+    box-shadow: 0 0 10px var(--text-cyan) !important;
+    border: none !important;
+}
+
+.slider-cyber::-moz-range-thumb {
+    background: var(--text-cyan) !important;
+    box-shadow: 0 0 10px var(--text-cyan) !important;
+    border: none !important;
+}
+
+.form-check-cyber .form-check-input {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 255, 204, 0.3);
+}
+
+.form-check-cyber .form-check-input:checked {
+    background-color: var(--text-cyan);
+    border-color: var(--text-cyan);
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+.btn-cyber-primary {
+    background: linear-gradient(135deg, rgba(0, 255, 204, 0.15) 0%, rgba(0, 229, 255, 0.15) 100%);
+    border: 1px solid var(--text-cyan);
+    color: var(--text-cyan);
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.25s ease;
+}
+
+.btn-cyber-primary:hover {
+    background: linear-gradient(135deg, rgba(0, 255, 204, 0.3) 0%, rgba(0, 229, 255, 0.3) 100%);
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+    color: #ffffff;
+}
+
+.btn-cyber-primary:active {
+    transform: translateY(1px);
+}
+
+/* Animations */
+@keyframes pulse-green {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 102, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(0, 255, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 102, 0);
+    }
+}
+
+.animate-pulse {
+    animation: cyber-glow-pulse 2s infinite ease-in-out;
+}
+
+@keyframes cyber-glow-pulse {
+    0%, 100% {
+        opacity: 0.7;
+        text-shadow: 0 0 2px var(--text-cyan);
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 10px var(--text-cyan);
+    }
+}
+
+/* Responsive side border removal on small devices */
+@media(min-width: 768px) {
+    .border-start-md {
+        border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+}

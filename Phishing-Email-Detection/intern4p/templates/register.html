@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Initialize new secure credentials.">
+    <title>Secure Login System - Initialize Credentials</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Cyber Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="cyber-grid"></div>
+    <div class="scanlines"></div>
+
+    <!-- Page Loading Screen -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="cyber-ring"></div>
+        <div class="loading-text">COMMENCING USER HANDSHAKE CONTEXT...</div>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-cyber">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-cyber" href="{{ url_for('index') }}">
+                <i class="fa-solid fa-shield-halved text-glow-blue me-2"></i>SECURE_PORTAL
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-cyber" href="{{ url_for('login') }}"><i class="fa-solid fa-key me-1"></i> ACCESS_UPLINK</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-cyber active" href="{{ url_for('register') }}"><i class="fa-solid fa-user-plus me-1"></i> INITIALIZE_NODE</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container my-auto py-5">
+        <div class="row justify-content-center align-items-stretch g-4">
+            
+            <!-- Left Side: Anime Programmer Wallpaper -->
+            <div class="col-lg-6 col-md-10 d-none d-lg-block fade-in-up">
+                <div class="anime-frame">
+                    <div class="hud-tag">SEC_COMMS // SYS.NODE.INIT</div>
+                    <img src="{{ url_for('static', filename='images/cyberpunk_bg.jpg') }}" alt="Anime Cyberpunk City Wallpaper" class="anime-img">
+                    <div class="anime-overlay-text">
+                        <span class="anime-badge">Cyber City Core</span>
+                        <h4 class="text-glow-purple m-0">Grid Matrix 0x7E</h4>
+                        <p class="text-secondary small m-0" style="font-family:'Share Tech Mono',monospace;">System encryption keys ready. Awaiting secure credential set.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Register Card -->
+            <div class="col-lg-6 col-md-10 fade-in-up" style="animation-delay: 0.15s;">
+                <div class="cyber-card h-100">
+                    <div class="card-corner-decor"></div>
+                    <div class="card-corner-decor-bl"></div>
+
+                    <h2 class="mb-2 text-glow-purple"><i class="fa-solid fa-shield-halved me-2"></i>INITIALIZE NODE</h2>
+                    <p class="text-secondary mb-4 small text-uppercase">Establish security credentials</p>
+
+                    <!-- Flash messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-cyber alert-cyber-{{ category }} alert-dismissible fade show" role="alert">
+                                    <i class="fa-solid {% if category=='danger' %}fa-triangle-exclamation{% elif category=='success' %}fa-circle-check{% else %}fa-circle-info{% endif %} me-2"></i>
+                                    {{ message }}
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- Registration Form -->
+                    <form method="POST" action="{{ url_for('register') }}" autocomplete="off">
+                        {{ form.hidden_tag() }}
+
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="username" class="cyber-label">{{ form.username.label }}</label>
+                            <div class="input-icon-group">
+                                {{ form.username(class="form-control cyber-input", id="username", placeholder="Alpha-numeric username") }}
+                                <i class="fa-solid fa-user-ninja"></i>
+                            </div>
+                            {% if form.username.errors %}
+                                {% for error in form.username.errors %}
+                                    <div class="text-glow-pink mt-1 small"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="cyber-label">{{ form.email.label }}</label>
+                            <div class="input-icon-group">
+                                {{ form.email(class="form-control cyber-input", id="email", placeholder="agent@agency.org") }}
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            {% if form.email.errors %}
+                                {% for error in form.email.errors %}
+                                    <div class="text-glow-pink mt-1 small"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="password" class="cyber-label">{{ form.password.label }}</label>
+                            <div class="input-icon-group">
+                                {{ form.password(class="form-control cyber-input", id="password", placeholder="••••••••") }}
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <!-- Password Strength Indicator -->
+                            <div class="password-meter-container">
+                                <div class="progress progress-cyber">
+                                    <div id="strength-bar" class="progress-bar-cyber" role="progressbar"></div>
+                                </div>
+                                <div class="strength-label">
+                                    <span>STRENGTH_LEVEL: <strong id="strength-text" style="text-shadow: 0 0 5px currentColor;">None</strong></span>
+                                    <span>min 8 chars, 1 Upper, 1 Lower, 1 Num, 1 Spec</span>
+                                </div>
+                            </div>
+                            {% if form.password.errors %}
+                                {% for error in form.password.errors %}
+                                    <div class="text-glow-pink mt-1 small"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mb-4">
+                            <label for="confirm_password" class="cyber-label">{{ form.confirm_password.label }}</label>
+                            <div class="input-icon-group">
+                                {{ form.confirm_password(class="form-control cyber-input", id="confirm_password", placeholder="••••••••") }}
+                                <i class="fa-solid fa-shield-check fa-shield"></i>
+                            </div>
+                            {% if form.confirm_password.errors %}
+                                {% for error in form.confirm_password.errors %}
+                                    <div class="text-glow-pink mt-1 small"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Action Button -->
+                        <button type="submit" class="btn btn-cyber btn-cyber-purple w-100 mb-3">
+                            <i class="fa-solid fa-terminal me-2"></i>Create Node Identity
+                        </button>
+
+                        <div class="text-center mt-3">
+                            <span class="text-secondary small text-uppercase">Already registered? </span>
+                            <a href="{{ url_for('login') }}" class="small text-uppercase" style="font-family:'Orbitron',sans-serif; font-size:0.8rem; letter-spacing:1px; font-weight: 600;">
+                                Establish Uplink
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-cyber text-center">
+        <div class="container">
+            <p class="mb-0">
+                <i class="fa-solid fa-lock text-glow-blue me-1"></i> SECURE LOGIN SYSTEM v1.0.4 // ENCRYPTED NODE CONTEXT // 2026
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

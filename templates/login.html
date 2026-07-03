@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}SECURE_AUTH // Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center flex-grow-1">
+    <div class="col-md-8 col-lg-5">
+        <!-- Glassmorphism Card -->
+        <div class="glass-card p-4 p-sm-5">
+            <!-- Hacker Boy Illustration -->
+            <div class="hacker-avatar-container">
+                <img src="{{ url_for('static', filename='images/hacker.jpg') }}" alt="Cyber Hacker Avatar" class="hacker-avatar">
+            </div>
+            
+            <h2 class="text-center fw-bold mb-4 glow-text text-white">PORTAL ACCESS</h2>
+            
+            <!-- Login Form -->
+            <form action="{{ url_for('login') }}" method="POST" autocomplete="off">
+                <!-- CSRF Protection -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <!-- Username or Email -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control form-control-cyber" id="login_id" name="login_id" placeholder="Username or Email" required>
+                    <label for="login_id"><i class="bi bi-person me-2"></i>Username or Email</label>
+                </div>
+
+                <!-- Password with Eye Toggle -->
+                <div class="form-floating mb-4 password-field-wrapper">
+                    <input type="password" class="form-control form-control-cyber" id="password" name="password" placeholder="Password" required>
+                    <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
+                    <button type="button" class="password-toggle-btn" data-target="password" aria-label="Toggle Password Visibility">
+                        <i class="bi bi-eye-slash fs-5"></i>
+                    </button>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-cyber-primary py-2 btn-lg">
+                        <i class="bi bi-shield-shaded me-2"></i>DECRYPT & ENTER
+                    </button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <p class="small text-muted mb-0">
+                        First time connection? 
+                        <a href="{{ url_for('register') }}" class="text-info text-decoration-none fw-bold">Register Identity</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

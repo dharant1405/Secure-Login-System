@@ -1,0 +1,338 @@
+/* Import Modern Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800;900&display=swap');
+
+/* Cyber Security Theme Color Scheme */
+:root {
+    --bg-dark: #060913;
+    --bg-card: rgba(10, 15, 30, 0.6);
+    --primary-cyan: #00f2fe;
+    --primary-blue: #4facfe;
+    --accent-purple: #9b51e0;
+    --success-green: #00ffcc;
+    --danger-red: #ff3366;
+    --warning-orange: #ffb300;
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-glass: rgba(0, 242, 254, 0.15);
+}
+
+/* Global Styles */
+body {
+    background-color: var(--bg-dark);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Decorative Background Canvas Grid */
+#cyber-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Header Typography */
+h1, h2, h3, h4, h5, h6, .cyber-font {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.glass-card:hover {
+    border-color: rgba(0, 242, 254, 0.3);
+    box-shadow: 0 12px 40px 0 rgba(0, 242, 254, 0.15);
+}
+
+/* Neon Cyber Scanning Effect */
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(0, 242, 254, 0.03),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+/* Custom Alert Styling */
+.alert-cyber {
+    background: rgba(10, 15, 30, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+.alert-cyber-danger {
+    border-color: var(--danger-red);
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.2);
+}
+.alert-cyber-success {
+    border-color: var(--success-green);
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+}
+
+/* Input Fields Styling */
+.form-control-cyber {
+    background: rgba(6, 9, 19, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main) !important;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control-cyber:focus {
+    border-color: var(--primary-cyan);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+    outline: none;
+}
+
+.form-control-cyber::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* Cyber Floating Label Adjustments */
+.form-floating > .form-control-cyber:focus ~ label,
+.form-floating > .form-control-cyber:not(:placeholder-shown) ~ label {
+    color: var(--primary-cyan) !important;
+    transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
+}
+.form-floating > label {
+    color: var(--text-muted);
+    padding: 0.75rem 1rem;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* Cyber Buttons */
+.btn-cyber-primary {
+    background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--primary-blue) 100%);
+    border: none;
+    color: #060913;
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-cyber-primary:hover, .btn-cyber-primary:focus {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+    transform: translateY(-2px);
+    color: #060913;
+}
+
+.btn-cyber-primary:active {
+    transform: translateY(0);
+}
+
+.btn-cyber-secondary {
+    background: transparent;
+    border: 1px solid var(--primary-cyan);
+    color: var(--primary-cyan);
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-cyber-secondary:hover {
+    background: rgba(0, 242, 254, 0.1);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+    color: var(--primary-cyan);
+    transform: translateY(-2px);
+}
+
+.btn-cyber-danger {
+    background: transparent;
+    border: 1px solid var(--danger-red);
+    color: var(--danger-red);
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-cyber-danger:hover {
+    background: rgba(255, 51, 102, 0.15);
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+    color: var(--danger-red);
+    transform: translateY(-2px);
+}
+
+/* Hacker Avatar Styling */
+.hacker-avatar-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem auto;
+    position: relative;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--primary-cyan), var(--accent-purple));
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+}
+
+.hacker-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--bg-dark);
+}
+
+/* Password Strength Indicator */
+.strength-meter-container {
+    margin-top: 0.5rem;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.strength-meter-bar {
+    height: 100%;
+    width: 0;
+    background: var(--danger-red);
+    transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.strength-text {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* Glow Effects */
+.glow-text {
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+}
+
+.glow-text-purple {
+    text-shadow: 0 0 10px rgba(155, 81, 224, 0.5);
+    color: var(--accent-purple);
+}
+
+.glow-border {
+    border-color: var(--primary-cyan) !important;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.25) !important;
+}
+
+/* Navbar Tuning */
+.navbar-cyber {
+    background: rgba(6, 9, 19, 0.8) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-glass);
+}
+.navbar-cyber .navbar-brand {
+    font-weight: 800;
+    color: var(--primary-cyan);
+    text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+}
+.navbar-cyber .nav-link {
+    color: var(--text-main) !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.navbar-cyber .nav-link:hover {
+    color: var(--primary-cyan) !important;
+}
+
+/* Custom Form Password Toggle Icon Placement */
+.password-field-wrapper {
+    position: relative;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.3s ease;
+}
+
+.password-toggle-btn:hover {
+    color: var(--primary-cyan);
+}
+
+/* Footer style */
+footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border-glass);
+    background: rgba(6, 9, 19, 0.9);
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.25); }
+    50% { box-shadow: 0 0 25px rgba(0, 242, 254, 0.5); }
+    100% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.25); }
+}
+
+.pulse-glow {
+    animation: pulseGlow 3s infinite;
+}
+
+/* Scanning Line Overlay for the Login/Register Pages */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.15;
+}

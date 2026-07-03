@@ -1,0 +1,692 @@
+/* 
+   =========================================
+   CYBERSECURITY AUTHENTICATION SYSTEM STYLES
+   Theme: Neon Cyberpunk Anime
+   Colors: Neon Blue (#00f0ff), Purple (#bd00ff), Dark Grey (#0d0e15), Matrix (#00ff66)
+   =========================================
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap');
+
+:root {
+    --bg-dark: #07070c;
+    --bg-card: rgba(13, 14, 24, 0.65);
+    --neon-blue: #00f0ff;
+    --neon-purple: #bd00ff;
+    --neon-pink: #ff0055;
+    --neon-green: #00ff66;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --cyber-grid-color: rgba(189, 0, 255, 0.05);
+    --cyber-grid-blue: rgba(0, 240, 255, 0.05);
+    --border-glow: 1px solid rgba(0, 240, 255, 0.25);
+    --transition-speed: 0.3s;
+}
+
+/* --- GENERAL RESET & BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+a {
+    color: var(--neon-blue);
+    text-decoration: none;
+    transition: all var(--transition-speed) ease;
+}
+
+a:hover {
+    color: var(--neon-purple);
+    text-shadow: 0 0 8px var(--neon-purple);
+}
+
+/* --- SYSTEM CANVAS BACKGROUNDS --- */
+#particle-canvas, #rain-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+#rain-canvas {
+    opacity: 0.25;
+}
+
+/* --- CYBER GRID ANIMATION --- */
+.cyber-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: 
+        linear-gradient(var(--cyber-grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--cyber-grid-color) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center;
+    z-index: -2;
+    transform: perspective(500px) rotateX(60deg) translateY(-30%) translateZ(0);
+    transform-origin: top center;
+    animation: gridScroll 20s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes gridScroll {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 1000px;
+    }
+}
+
+/* Scanlines overlay */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+/* --- GLASSMORPHISM CARDS --- */
+.cyber-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), 
+                0 0 20px rgba(0, 240, 255, 0.05),
+                inset 0 0 15px rgba(189, 0, 255, 0.05);
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cyber-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--neon-blue), var(--neon-purple), transparent);
+    transition: all 0.6s ease;
+}
+
+.cyber-card:hover {
+    border-color: rgba(0, 240, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), 
+                0 0 30px rgba(0, 240, 255, 0.15),
+                inset 0 0 20px rgba(189, 0, 255, 0.1);
+}
+
+.cyber-card:hover::before {
+    left: 100%;
+    animation: borderSwipe 2s linear infinite;
+}
+
+@keyframes borderSwipe {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Cyber corner decors */
+.cyber-card::after {
+    content: 'SYS.LOC//';
+    position: absolute;
+    bottom: 5px;
+    right: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--neon-blue);
+    opacity: 0.5;
+    letter-spacing: 1px;
+}
+
+.card-corner-decor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    border-top: 3px solid var(--neon-blue);
+    border-right: 3px solid var(--neon-blue);
+    pointer-events: none;
+}
+
+.card-corner-decor-bl {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    border-bottom: 3px solid var(--neon-purple);
+    border-left: 3px solid var(--neon-purple);
+    pointer-events: none;
+}
+
+/* --- NEON BUTTONS --- */
+.btn-cyber {
+    background: transparent;
+    color: var(--neon-blue);
+    border: 1px solid var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    padding: 0.75rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+    z-index: 1;
+}
+
+.btn-cyber::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+.btn-cyber:hover {
+    color: #fff;
+    background: rgba(0, 240, 255, 0.15);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px rgba(0, 240, 255, 0.3);
+    text-shadow: 0 0 5px #fff;
+}
+
+.btn-cyber:hover::before {
+    left: 100%;
+}
+
+.btn-cyber-purple {
+    color: var(--neon-purple);
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 10px rgba(189, 0, 255, 0.1);
+}
+
+.btn-cyber-purple:hover {
+    background: rgba(189, 0, 255, 0.15);
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 20px var(--neon-purple), inset 0 0 10px rgba(189, 0, 255, 0.3);
+}
+
+/* --- CYBER GLOW TEXT --- */
+.text-glow-blue {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+}
+
+.text-glow-purple {
+    color: var(--neon-purple);
+    text-shadow: 0 0 10px rgba(189, 0, 255, 0.6);
+}
+
+.text-glow-pink {
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.6);
+}
+
+/* --- INPUT FIELDS --- */
+.cyber-input {
+    background: rgba(7, 7, 12, 0.8) !important;
+    border: 1px solid rgba(148, 163, 184, 0.2) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+    padding: 0.8rem 1.2rem !important;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem !important;
+    transition: all var(--transition-speed) ease !important;
+}
+
+.cyber-input:focus {
+    border-color: var(--neon-blue) !important;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.25) !important;
+    background: rgba(13, 14, 24, 0.95) !important;
+    outline: none;
+}
+
+.cyber-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+}
+
+.input-icon-group {
+    position: relative;
+}
+
+.input-icon-group i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    transition: color var(--transition-speed) ease;
+}
+
+.input-icon-group .cyber-input {
+    padding-left: 45px !important;
+}
+
+.input-icon-group .cyber-input:focus + i {
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+/* --- PASSWORD STRENGTH METER --- */
+.password-meter-container {
+    margin-top: 0.6rem;
+}
+
+.progress-cyber {
+    background-color: rgba(255, 255, 255, 0.05);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.progress-bar-cyber {
+    width: 0%;
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease-in-out, background-color 0.4s ease;
+}
+
+.strength-weak {
+    background-color: var(--neon-pink) !important;
+    box-shadow: 0 0 8px var(--neon-pink);
+}
+
+.strength-medium {
+    background-color: #ffaa00 !important;
+    box-shadow: 0 0 8px #ffaa00;
+}
+
+.strength-strong {
+    background-color: #adff2f !important;
+    box-shadow: 0 0 8px #adff2f;
+}
+
+.strength-very-strong {
+    background-color: var(--neon-green) !important;
+    box-shadow: 0 0 8px var(--neon-green);
+}
+
+.strength-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+}
+
+/* --- TYPING EFFECTS & TERMINAL --- */
+.cyber-terminal {
+    font-family: 'Share Tech Mono', monospace;
+    background-color: rgba(5, 5, 8, 0.95);
+    border: 1px solid rgba(0, 255, 102, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    color: var(--neon-green);
+    margin-bottom: 2rem;
+    box-shadow: inset 0 0 15px rgba(0, 255, 102, 0.1), 0 5px 15px rgba(0, 0, 0, 0.5);
+    min-height: 150px;
+    position: relative;
+}
+
+.cyber-terminal::before {
+    content: "SYSTEM LOG TERMINAL //";
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(0, 255, 102, 0.5);
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(0, 255, 102, 0.1);
+    padding-bottom: 0.3rem;
+}
+
+.typing-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background-color: var(--neon-green);
+    margin-left: 4px;
+    animation: blink 0.8s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* --- FLASH MESSAGES --- */
+.alert-cyber {
+    background: rgba(13, 14, 24, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: 'Share Tech Mono', monospace;
+    border: 1px solid;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.alert-cyber-success {
+    border-color: rgba(0, 255, 102, 0.4);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.1);
+    color: var(--neon-green);
+}
+
+.alert-cyber-danger {
+    border-color: rgba(255, 0, 85, 0.4);
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.1);
+    color: var(--neon-pink);
+}
+
+.alert-cyber-warning {
+    border-color: rgba(255, 170, 0, 0.4);
+    box-shadow: 0 0 10px rgba(255, 170, 0, 0.1);
+    color: #ffaa00;
+}
+
+.alert-cyber-info {
+    border-color: rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+    color: var(--neon-blue);
+}
+
+/* --- ANIME LOADING SCREEN --- */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.cyber-ring {
+    width: 100px;
+    height: 100px;
+    border: 3px solid transparent;
+    border-top: 3px solid var(--neon-blue);
+    border-bottom: 3px solid var(--neon-purple);
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+    position: relative;
+}
+
+.cyber-ring::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid transparent;
+    border-left: 2px solid var(--neon-blue);
+    border-right: 2px solid var(--neon-purple);
+    border-radius: 50%;
+    animation: spinReverse 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spinReverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+.loading-text {
+    margin-top: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-blue);
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px var(--neon-blue);
+    animation: textBreathe 1.5s ease infinite alternate;
+}
+
+@keyframes textBreathe {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+/* --- ANIME AND ILLUSTRATION STYLING --- */
+.anime-frame {
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 0 25px rgba(189, 0, 255, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background: rgba(13, 14, 24, 0.4);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 350px;
+}
+
+.anime-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(7, 7, 12, 0.85));
+    z-index: 2;
+    pointer-events: none;
+}
+
+.anime-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.85;
+    transition: transform 0.5s ease;
+}
+
+.anime-frame:hover .anime-img {
+    transform: scale(1.03);
+}
+
+.anime-overlay-text {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 3;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.anime-badge {
+    background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+    font-size: 0.65rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0 10px rgba(189, 0, 255, 0.5);
+}
+
+.hud-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--neon-blue);
+    background: rgba(7, 7, 12, 0.8);
+    padding: 0.25rem 0.5rem;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 4px;
+    z-index: 3;
+}
+
+/* --- DASHBOARD COMPONENTS --- */
+.hud-panel {
+    background: rgba(13, 14, 24, 0.7);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all var(--transition-speed) ease;
+}
+
+.hud-panel:hover {
+    border-color: rgba(0, 240, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.25rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.protection-bar {
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 0.5rem;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.protection-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+    border-radius: 2px;
+}
+
+/* Header & Footer Branding */
+.navbar-cyber {
+    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+    background: rgba(7, 7, 12, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1rem 0;
+}
+
+.navbar-brand-cyber {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+}
+
+.nav-link-cyber {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--text-secondary) !important;
+    transition: all var(--transition-speed) ease;
+}
+
+.nav-link-cyber:hover, .nav-link-cyber.active {
+    color: var(--neon-blue) !important;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.footer-cyber {
+    margin-top: auto;
+    border-top: 1px solid rgba(148, 163, 184, 0.08);
+    padding: 1.5rem 0;
+    background: rgba(7, 7, 12, 0.9);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* --- ANIMATION UTILITIES --- */
+.fade-in-up {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

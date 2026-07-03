@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIELD // Password Strength Analyzer & Security Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/style.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Bootstrap CSS Fallback link just in case -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <!-- FontAwesome for Cyberpunk-style Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts: Orbitron for titles, Inter for body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <!-- Custom Cybersecurity Theme Styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Matrix/Scanline visual background elements -->
+    <div class="cyber-bg"></div>
+    <div class="scanlines"></div>
+
+    <div class="container py-5">
+        <!-- Header Section -->
+        <header class="text-center mb-5">
+            <div class="d-inline-block p-2 px-3 mb-2 brand-badge">
+                <i class="fa-solid fa-shield-halved text-cyan me-2 animate-pulse"></i> SECURE PROTOCOL
+            </div>
+            <h1 class="cyber-title text-uppercase mb-2">SHIELD // PASSWORD ANALYZER</h1>
+            <p class="cyber-subtitle text-muted">Instant cryptographic strength evaluation and vulnerability intelligence.</p>
+        </header>
+
+        <!-- Main Workspace Dashboard Grid -->
+        <div class="row g-4">
+            
+            <!-- Left Panel: Input & Rules Checklist -->
+            <div class="col-lg-7">
+                <div class="cyber-card p-4 h-100">
+                    <div class="card-header-cyber mb-4">
+                        <h2 class="h5 text-cyan m-0"><i class="fa-solid fa-key me-2"></i> ANALYZER INTERFACE</h2>
+                        <span class="status-indicator online"></span>
+                    </div>
+                    
+                    <!-- Password Input Form Group -->
+                    <div class="mb-4 position-relative">
+                        <label for="passwordInput" class="form-label text-muted text-uppercase small tracking-wider">Enter Password to Analyze</label>
+                        <div class="input-group input-group-cyber">
+                            <span class="input-group-text text-cyan bg-transparent border-end-0">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" class="form-control bg-transparent border-start-0 border-end-0 text-white" id="passwordInput" placeholder="Type password here..." autocomplete="off">
+                            <button class="btn btn-cyber-toggle border-start-0" type="button" id="togglePasswordVisibility" title="Toggle visibility">
+                                <i class="fa-solid fa-eye" id="toggleIcon"></i>
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2 small">
+                            <span class="text-muted">Length: <span id="charCount" class="text-cyan fw-bold">0</span> characters</span>
+                            <span class="text-muted" id="capsWarning" style="display: none;"><i class="fa-solid fa-circle-exclamation text-warning me-1"></i> CAPS LOCK ACTIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Strength Level Display -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted text-uppercase small tracking-wider">Evaluation Score</span>
+                            <span class="badge strength-badge badge-empty" id="strengthLabel">EMPTY</span>
+                        </div>
+                        <!-- Custom styled dual layer progress bar -->
+                        <div class="progress progress-cyber" style="height: 10px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" id="strengthBar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <!-- Password Criteria Compliance Checklist -->
+                    <div>
+                        <span class="text-muted text-uppercase small tracking-wider d-block mb-3">Security Requirements Checklist</span>
+                        <div class="row g-2">
+                            <div class="col-sm-6">
+                                <div class="criteria-item uncheck d-flex align-items-center p-2 rounded" id="crit-length">
+                                    <i class="fa-solid fa-circle-xmark status-icon me-2 text-danger"></i>
+                                    <span class="small">At least 8 characters</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="criteria-item uncheck d-flex align-items-center p-2 rounded" id="crit-upper">
+                                    <i class="fa-solid fa-circle-xmark status-icon me-2 text-danger"></i>
+                                    <span class="small">Uppercase letter (A-Z)</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="criteria-item uncheck d-flex align-items-center p-2 rounded" id="crit-lower">
+                                    <i class="fa-solid fa-circle-xmark status-icon me-2 text-danger"></i>
+                                    <span class="small">Lowercase letter (a-z)</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="criteria-item uncheck d-flex align-items-center p-2 rounded" id="crit-number">
+                                    <i class="fa-solid fa-circle-xmark status-icon me-2 text-danger"></i>
+                                    <span class="small">Number (0-9)</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="criteria-item uncheck d-flex align-items-center p-2 rounded" id="crit-symbol">
+                                    <i class="fa-solid fa-circle-xmark status-icon me-2 text-danger"></i>
+                                    <span class="small">Special character (e.g. @, #, $)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Diagnostics & Security Metrics -->
+            <div class="col-lg-5">
+                <div class="d-flex flex-column h-100 justify-content-between gap-4">
+                    
+                    <!-- Metrics Card -->
+                    <div class="cyber-card p-4 flex-grow-1">
+                        <div class="card-header-cyber mb-3">
+                            <h2 class="h5 text-cyan m-0"><i class="fa-solid fa-chart-simple me-2"></i> SECURITY METRICS</h2>
+                        </div>
+                        
+                        <div class="metric-row d-flex justify-content-between align-items-center py-2 border-bottom border-secondary-subtle">
+                            <span class="text-muted"><i class="fa-solid fa-gauge-high me-2 text-cyan"></i> Entropy:</span>
+                            <span class="fw-bold" id="entropyVal">0 bits</span>
+                        </div>
+                        
+                        <div class="metric-row d-flex justify-content-between align-items-center py-2 border-bottom border-secondary-subtle">
+                            <span class="text-muted"><i class="fa-solid fa-hourglass-half me-2 text-cyan"></i> Time to Crack:</span>
+                            <span class="fw-bold text-end text-truncate px-2" id="crackTimeVal" style="max-width: 250px;">Instantly</span>
+                        </div>
+
+                        <div class="metric-row d-flex justify-content-between align-items-center py-2 border-bottom border-secondary-subtle">
+                            <span class="text-muted"><i class="fa-solid fa-circle-nodes me-2 text-cyan"></i> Shannon Randomness:</span>
+                            <span class="fw-bold" id="shannonVal">0.00</span>
+                        </div>
+
+                        <div class="metric-row d-flex justify-content-between align-items-center py-2">
+                            <span class="text-muted"><i class="fa-solid fa-triangle-exclamation me-2 text-cyan"></i> Breach Database Status:</span>
+                            <span id="breachBadge" class="badge bg-secondary">UNKNOWN</span>
+                        </div>
+                    </div>
+
+                    <!-- Suggestions / System Terminal Messages Card -->
+                    <div class="cyber-card p-4 flex-grow-1" id="suggestionsContainer">
+                        <div class="card-header-cyber mb-3">
+                            <h2 class="h5 text-cyan m-0"><i class="fa-solid fa-terminal me-2"></i> RECOMMENDATIONS</h2>
+                        </div>
+                        <div class="suggestions-list" id="suggestionsList">
+                            <div class="suggestion-placeholder text-center text-muted py-4">
+                                <i class="fa-solid fa-circle-info fa-2x mb-2 text-cyan"></i>
+                                <p class="mb-0 small">Analysis engine idle. Enter a password to trigger suggestions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Lower Section: Passphrase & Password Generator -->
+            <div class="col-12">
+                <div class="cyber-card p-4">
+                    <div class="card-header-cyber mb-4">
+                        <h2 class="h5 text-cyan m-0"><i class="fa-solid fa-gears me-2"></i> CRYPTOGRAPHIC PASSWORD GENERATOR</h2>
+                        <span class="badge bg-dark border border-cyan text-cyan">SECURE RANDOMNESS</span>
+                    </div>
+
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-6">
+                            <!-- Output Field with Copy Button -->
+                            <div class="mb-3">
+                                <label class="form-label text-muted text-uppercase small tracking-wider">Generated Cryptographic Key</label>
+                                <div class="input-group input-group-cyber">
+                                    <input type="text" class="form-control bg-transparent text-cyan fw-bold text-center" id="generatedPassword" readonly placeholder="Click Generate Below...">
+                                    <button class="btn btn-cyber-copy" type="button" id="copyPasswordBtn" title="Copy to clipboard" disabled>
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="mt-2 text-center" id="copySuccessMsg" style="display: none;">
+                                    <span class="text-cyan small"><i class="fa-solid fa-circle-check"></i> Copied successfully to clipboard!</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 border-start-md border-secondary-subtle">
+                            <!-- Generation Controls -->
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label for="lengthSlider" class="form-label text-muted text-uppercase small tracking-wider m-0">Password Length</label>
+                                        <span class="text-cyan fw-bold" id="lengthDisplay">16</span>
+                                    </div>
+                                    <input type="range" class="form-range slider-cyber" min="8" max="40" step="1" value="16" id="lengthSlider">
+                                </div>
+
+                                <div class="col-12">
+                                    <span class="text-muted text-uppercase small tracking-wider d-block mb-2">Character Options</span>
+                                    <div class="d-flex flex-wrap gap-3">
+                                        <div class="form-check form-check-cyber">
+                                            <input class="form-check-input" type="checkbox" id="genUpper" checked>
+                                            <label class="form-check-label text-white small" for="genUpper">A-Z (Upper)</label>
+                                        </div>
+                                        <div class="form-check form-check-cyber">
+                                            <input class="form-check-input" type="checkbox" id="genLower" checked>
+                                            <label class="form-check-label text-white small" for="genLower">a-z (Lower)</label>
+                                        </div>
+                                        <div class="form-check form-check-cyber">
+                                            <input class="form-check-input" type="checkbox" id="genNumbers" checked>
+                                            <label class="form-check-label text-white small" for="genNumbers">0-9 (Digits)</label>
+                                        </div>
+                                        <div class="form-check form-check-cyber">
+                                            <input class="form-check-input" type="checkbox" id="genSymbols" checked>
+                                            <label class="form-check-label text-white small" for="genSymbols">#$@! (Symbols)</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-3">
+                                    <button class="btn btn-cyber-primary w-100 text-uppercase py-2" type="button" id="generatePasswordBtn">
+                                        <i class="fa-solid fa-arrows-rotate me-2"></i> Generate Password
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Section -->
+        <footer class="mt-5 text-center text-muted small border-top border-secondary-subtle pt-3">
+            <p class="mb-1"><i class="fa-solid fa-code me-1"></i> INTERNSHIP PROJECT // Cryptographic Analysis & Web Security</p>
+            <p class="mb-0">Powered by Flask Backend, secure python/secrets entropy module, and Have I Been Pwned API checks.</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS (including Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- Custom logic connection -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
